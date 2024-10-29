@@ -1,0 +1,46 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: md22
+  - override /model: visnet_md22
+  - override /callbacks: default
+  - override /trainer: default
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["md22", "visnet_md22"]
+
+task_name: ${data.molecules}
+
+# 370
+data:
+  molecules: dw-nanotube
+  batch_size: 1
+  infer_batch_size: 1
+  num_workers: 4
+  pin_memory: true
+  transforms:
+    expand_size: 1
+    num_grids: [7, 3, 3]
+  data_seed: 1
+
+model:
+  net:
+    atom_cutoff: 4.0
+    grid_cutoff: 5.0
+  hparams:
+    lr: 0.0012
+    neg_dy_weight: 0.995
+    y_weight: 0.005
+
+trainer:
+  inference_mode: false
+  reload_dataloaders_every_n_epochs: 0
+
+callbacks:
+  early_stopping:
+    patience: 600

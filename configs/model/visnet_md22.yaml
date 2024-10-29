@@ -1,0 +1,49 @@
+_target_: src.models.md22_module.MD22LitModule
+
+optimizer:
+  _target_: torch.optim.AdamW
+  _partial_: true
+  lr: ${model.hparams.lr}
+  weight_decay: 0.0
+  amsgrad: false
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.8
+  min_lr: 1.0e-07
+  patience: 30
+
+net:
+  _target_: src.models.components.visnet.visnet_p3m.ViSNet_P3M
+  regress_forces: true
+  use_pbc: false
+  num_layers: 6
+  num_rbf: 32
+  num_filters: 64
+  hidden_channels: 128
+  max_z: 100
+  atom_cutoff: ???
+  max_a2a_neighbors: 32
+  grid_cutoff: ???
+  max_a2m_neighbors: 32
+  num_grids: ${data.transforms.num_grids}
+  long_type: FNO
+  lmax: 1
+  num_heads: 8
+
+normalizer:
+  _target_: src.models.components.normalizer.Normalizer
+  mean: 0.0
+  std: 1.0
+
+compile: false
+
+hparams:
+  lr_warmup_steps: 1000 
+  lr: ???
+  ema_alpha_neg_dy: 1.0
+  ema_alpha_y: 0.05
+  neg_dy_weight: ???
+  y_weight: ???

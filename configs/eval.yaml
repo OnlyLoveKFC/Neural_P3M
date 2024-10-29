@@ -1,0 +1,20 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - data: oe62 # choose datamodule with `test_dataloader()` for evaluation
+  - model: schnet_oe62
+  - callbacks: default
+  - logger: null
+  - trainer: default
+  - paths: default
+  - extras: default
+  - hydra: default
+  - experiment: null
+
+task_name: "eval"
+
+tags: ["Neural-P3M"]
+
+# passing checkpoint path is necessary for evaluation
+ckpt_path: ???

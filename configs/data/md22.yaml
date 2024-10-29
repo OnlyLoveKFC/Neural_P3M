@@ -1,0 +1,14 @@
+_target_: src.data.md22_datamodule.MD22DataModule
+data_dir: ${paths.data_dir}/md22
+molecules: ???
+batch_size: ???
+infer_batch_size: ???
+num_workers: 4
+pin_memory: True
+transforms:
+  _target_: src.data.components.transform.NonPBCAddGrid
+  expand_size: 1
+  num_grids: ???
+data_seed: 1
+test_interval: 1000
+split_file: null

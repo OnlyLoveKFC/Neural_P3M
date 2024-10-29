@@ -1,0 +1,39 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /data: ag
+  - override /model: visnet_ag
+  - override /callbacks: default
+  - override /trainer: default
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["visnet", "ag"]
+
+task_name: ag
+
+# 71
+data:
+  batch_size: 4
+  infer_batch_size: 4
+  num_workers: 4
+  pin_memory: true
+  transforms:
+    num_grids: [3, 3, 2]
+  data_seed: 1
+
+trainer:
+  inference_mode: false
+
+callbacks:
+  model_checkpoint:
+    filename: epoch_{epoch:03d}_{val_total_mix_loss:.4f} 
+    monitor: val_total_mix_loss
+  early_stopping:
+    monitor: val_total_mix_loss
+    patience: 600
+    mode: "min"

@@ -1,0 +1,57 @@
+_target_: src.models.oe62_module.OE62LitModule
+
+optimizer:
+  _target_: torch.optim.AdamW
+  _partial_: true
+  lr: ${model.hparams.lr}
+  weight_decay: 0.0
+  amsgrad: false
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.ReduceLROnPlateau
+  _partial_: true
+  mode: min
+  factor: 0.8
+  min_lr: 1.0e-07
+  patience: 10
+
+net:
+  _target_: src.models.components.gemnet.gemnet_p3m.GemNet_P3M
+  regress_forces: false
+  use_pbc: false
+  num_layers: 3
+  num_rbf: 128
+  num_filters: 256
+  max_z: 100
+  atom_cutoff: 6.0
+  max_a2a_neighbors: 50
+  grid_cutoff: 4.0
+  max_a2m_neighbors: 5
+  num_grids: ${data.transforms.num_grids}
+  long_type: FNO
+  num_spherical: 7
+  num_radial: 128
+  emb_size_atom: 256
+  emb_size_edge: 512
+  emb_size_trip: 64
+  emb_size_rbf: 16
+  emb_size_cbf: 16
+  emb_size_bil_trip: 64
+  num_before_skip: 1
+  num_after_skip: 2
+  num_concat: 1
+  num_atom: 3
+  direct_forces: false
+  rbf: {"name": "gaussian"}
+  envelope: {"name": "polynomial", "exponent": 5}
+  cbf: {"name": "spherical_harmonics"}
+  extensive: true
+  activation: silu
+
+normalizer: null
+
+compile: false
+
+hparams:
+  lr_warmup_steps: 6250 
+  lr: 0.0003

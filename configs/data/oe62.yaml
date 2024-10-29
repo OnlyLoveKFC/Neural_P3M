@@ -1,0 +1,13 @@
+_target_: src.data.oe62_datamodule.OE62DataModule
+data_dir: ${paths.data_dir}/oe62/energy_linref_pbe0
+batch_size: ???
+infer_batch_size: ???
+num_workers: 4
+pin_memory: True
+transforms:
+  _target_: src.data.components.transform.NonPBCAddGrid
+  expand_size: 1
+  num_grids: 
+  - 3
+  - 3
+  - 3
